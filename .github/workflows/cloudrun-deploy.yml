@@ -1,18 +1,17 @@
 name: Build and deploy project
 
-on: [push]
-# on:
-#   push:
-#     branches: [ "main" ]
-
-# defaults:
-#   with:
-#     SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-#     PROJECT_ID: ${{ env.PROJECT_ID }}
-#     REGION: ${{ env.REGION }}
-#     IMAGE: ${{ env.IMAGE }}
+on:
+  push:
+    branches: [ "main", "cd" ]
 
 jobs:
+  defaults:
+    with:
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+      PROJECT_ID: ${{ env.PROJECT_ID }}
+      REGION: ${{ env.REGION }}
+      IMAGE: ${{ env.IMAGE }}
+
   build:
     name: "Schedule cloud build"
       runs-on: ubuntu-latest
