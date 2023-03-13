@@ -5,9 +5,6 @@ on:
       - main
       - cd
 
-defaults:
-
-
 jobs:
   submit_build:
     permissions:
