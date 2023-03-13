@@ -12,16 +12,16 @@ jobs:
       REGION: ${{ env.REGION }}
       IMAGE: ${{ env.IMAGE }}
 
-  submit_build:
-    name: "Schedule cloud build"
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: 'Set up Cloud SDK'
-          uses: 'google-github-actions/setup-gcloud@v1'
-        - name: 'Kick off cloud build'
-          run: make cd_build
+#   submit_build:
+#     name: "Schedule cloud build"
+#       runs-on: ubuntu-latest
+#       steps:
+#         - name: Checkout
+#           uses: actions/checkout@v2
+#         - name: 'Set up Cloud SDK'
+#           uses: 'google-github-actions/setup-gcloud@v1'
+#         - name: 'Kick off cloud build'
+#           run: make cd_build
 
   run_deploy:
     name: "Deploy app to cloud run"
