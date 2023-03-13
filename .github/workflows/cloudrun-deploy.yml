@@ -6,11 +6,7 @@ on:
       - cd
 
 defaults:
-  with:
-    SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-    PROJECT_ID: ${{ env.PROJECT_ID }}
-    REGION: ${{ env.REGION }}
-    IMAGE: ${{ env.IMAGE }}
+
 
 jobs:
   submit_build:
@@ -24,6 +20,11 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
       - name: Kick off cloud build
+        with:
+          SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+          PROJECT_ID: ${{ env.PROJECT_ID }}
+          REGION: ${{ env.REGION }}
+          IMAGE: ${{ env.IMAGE }}
         run: make cd_build
   run_deploy:
     name: Deploy app to cloud run
@@ -34,4 +35,9 @@ jobs:
       - name: Set up cloud SDK
         uses: google-github-actions/setup-gcloud@v1
       - name: Deploy to cloud run
+        with:
+          SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+          PROJECT_ID: ${{ env.PROJECT_ID }}
+          REGION: ${{ env.REGION }}
+          IMAGE: ${{ env.IMAGE }}
         run: make cd_deploy
