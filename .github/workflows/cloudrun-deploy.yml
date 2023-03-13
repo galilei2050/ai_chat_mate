@@ -11,6 +11,11 @@ jobs:
       contents: read
     name: Schedule cloud build
     runs-on: ubuntu-latest
+    env:
+      SERVICE_ACCOUNT: '${{ secrets.SERVICE_ACCOUNT }}'
+      PROJECT_ID: '${{ env.PROJECT_ID }}'
+      REGION: '${{ env.REGION }}'
+      IMAGE: '${{ env.IMAGE }}'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -20,11 +25,7 @@ jobs:
 
       - name: Kick off cloud build
         shell: bash
-        env:
-          SERVICE_ACCOUNT: '${{ secrets.SERVICE_ACCOUNT }}'
-          PROJECT_ID: '${{ env.PROJECT_ID }}'
-          REGION: '${{ env.REGION }}'
-          IMAGE: '${{ env.IMAGE }}'
+
         run: make cd_build
 
   run_deploy:
