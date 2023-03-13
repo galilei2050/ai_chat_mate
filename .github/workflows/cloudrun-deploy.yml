@@ -21,10 +21,10 @@ jobs:
       - name: Kick off cloud build
         shell: bash
         env:
-          SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-          PROJECT_ID: ${{ env.PROJECT_ID }}
-          REGION: ${{ env.REGION }}
-          IMAGE: ${{ env.IMAGE }}
+          SERVICE_ACCOUNT: '${{ secrets.SERVICE_ACCOUNT }}'
+          PROJECT_ID: '${{ env.PROJECT_ID }}'
+          REGION: '${{ env.REGION }}'
+          IMAGE: '${{ env.IMAGE }}'
         run: make cd_build
 
   run_deploy:
@@ -39,8 +39,8 @@ jobs:
       - name: Deploy to cloud run
         shell: bash
         env:
-          SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-          PROJECT_ID: ${{ env.PROJECT_ID }}
-          REGION: ${{ env.REGION }}
-          IMAGE: ${{ env.IMAGE }}
+          SERVICE_ACCOUNT: '${{ secrets.SERVICE_ACCOUNT }}'
+          PROJECT_ID: '${{ env.PROJECT_ID }}'
+          REGION: '${{ env.REGION }}'
+          IMAGE: '${{ env.IMAGE }}'
         run: make cd_deploy
