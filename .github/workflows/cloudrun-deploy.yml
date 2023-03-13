@@ -19,6 +19,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Kick off cloud build
+        shell: bash
         with:
           SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
           PROJECT_ID: ${{ env.PROJECT_ID }}
@@ -36,6 +37,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Deploy to cloud run
+        shell: bash
         with:
           SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
           PROJECT_ID: ${{ env.PROJECT_ID }}
