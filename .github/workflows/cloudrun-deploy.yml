@@ -20,7 +20,7 @@ jobs:
 
       - name: Kick off cloud build
         shell: bash
-        with:
+        env:
           SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
           PROJECT_ID: ${{ env.PROJECT_ID }}
           REGION: ${{ env.REGION }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: Deploy to cloud run
         shell: bash
-        with:
+        env:
           SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
           PROJECT_ID: ${{ env.PROJECT_ID }}
           REGION: ${{ env.REGION }}
