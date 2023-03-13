@@ -2,8 +2,8 @@ SHELL:= /bin/bash
 SERVICE_ACCOUNT:=${SERVICE_ACCOUNT}
 
 configure:
-	@echo '${SERVICE_ACCOUNT}' > keyfile.txt
-	gcloud auth activate-service-account --key-file keyfile.txt; rm keyfile.txt || true
+	echo '${SERVICE_ACCOUNT}' > keyfile.txt
+	gcloud auth activate-service-account "gitlab@assistant2050.iam.gserviceaccount.com" --key-file=keyfile.txt; rm keyfile.txt || true
 
 build:
 	gcloud --project ${PROJECT_ID} builds submit . --region ${REGION} --suppress-logs --tag ${IMAGE} || true
