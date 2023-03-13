@@ -14,8 +14,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
+
       - name: Kick off cloud build
         with:
           SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
@@ -23,6 +25,7 @@ jobs:
           REGION: ${{ env.REGION }}
           IMAGE: ${{ env.IMAGE }}
         run: make cd_build
+
   run_deploy:
     name: Deploy app to cloud run
     runs-on: ubuntu-latest
@@ -31,6 +34,7 @@ jobs:
     steps:
       - name: Set up cloud SDK
         uses: google-github-actions/setup-gcloud@v1
+
       - name: Deploy to cloud run
         with:
           SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
