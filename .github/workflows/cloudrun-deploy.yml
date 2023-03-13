@@ -6,8 +6,6 @@ on:
       - cd
 
 defaults:
-  permissions:
-    contents: read
   with:
     SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
     PROJECT_ID: ${{ env.PROJECT_ID }}
@@ -16,6 +14,8 @@ defaults:
 
 jobs:
   submit_build:
+    permissions:
+      contents: read
     name: Schedule cloud build
     runs-on: ubuntu-latest
     steps:
