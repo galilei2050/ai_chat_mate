@@ -4,15 +4,17 @@ on:
     branches:
       - main
       - cd
+
+defaults:
+  permissions:
+    contents: read
+  with:
+    SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+    PROJECT_ID: ${{ env.PROJECT_ID }}
+    REGION: ${{ env.REGION }}
+    IMAGE: ${{ env.IMAGE }}
+
 jobs:
-  defaults:
-    permissions:
-      contents: read
-    with:
-      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-      PROJECT_ID: ${{ env.PROJECT_ID }}
-      REGION: ${{ env.REGION }}
-      IMAGE: ${{ env.IMAGE }}
   submit_build:
     name: Schedule cloud build
     runs-on: ubuntu-latest
