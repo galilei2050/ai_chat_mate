@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SERVICE_ACCOUNT: '${{ secrets.SERVICE_ACCOUNT }}'
-      PROJECT_ID: '${{ env.PROJECT_ID }}'
-      REGION: '${{ env.REGION }}'
-      IMAGE: '${{ env.IMAGE }}'
+      PROJECT_ID: '${{ secrets.PROJECT_ID }}'
+      REGION: '${{ secrets.REGION }}'
+      IMAGE: '${{ secrets.IMAGE }}'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
