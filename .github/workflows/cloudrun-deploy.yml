@@ -5,12 +5,12 @@ on: [push]
 #   push:
 #     branches: [ "main" ]
 
-defaults:
-  with:
-    SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-    PROJECT_ID: ${{ env.PROJECT_ID }}
-    REGION: ${{ env.REGION }}
-    IMAGE: ${{ env.IMAGE }}
+# defaults:
+#   with:
+#     SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+#     PROJECT_ID: ${{ env.PROJECT_ID }}
+#     REGION: ${{ env.REGION }}
+#     IMAGE: ${{ env.IMAGE }}
 
 jobs:
   build:
@@ -33,4 +33,3 @@ jobs:
           uses: 'google-github-actions/setup-gcloud@v1'
         - name: 'Deploy to cloud run'
           run: make cd_deploy
-        
