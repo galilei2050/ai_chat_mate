@@ -2,7 +2,7 @@ SHELL:= /bin/bash
 SERVICE_ACCOUNT:=${SERVICE_ACCOUNT}
 
 configure:
-	echo '${SERVICE_ACCOUNT}' > keyfile.txt
+	@echo '${SERVICE_ACCOUNT}' > keyfile.txt
 	gcloud auth activate-service-account --key-file keyfile.txt; rm keyfile.txt || true
 
 build:
