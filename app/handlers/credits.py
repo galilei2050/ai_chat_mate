@@ -30,6 +30,7 @@ class CreditsHandler(core.BasicHandler):
 
 FEEDBACK_URL = "https://3qugszanpzk.typeform.com/to/ifCEiciG"
 GITHUB_URL = "https://github.com/vgalilei/ai_chat_mate"
+MEETING_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2Tah2sMpfGIP_PWb8iIKaB5Uk5lI1wWCOsQtkOMyj7zy1wjDsEI8Ur90nIkx-Ywc27XO_xICiJ?gv=true"
 
 
 msg_credits = {
@@ -48,7 +49,8 @@ msg_credits = {
             inline_keyboard=[
                 [
                     types.InlineKeyboardButton("🔗 Source code", url=GITHUB_URL),
-                    types.InlineKeyboardButton("💬 Leave feedback", url=FEEDBACK_URL)
+                    types.InlineKeyboardButton("💬 Leave feedback", url=FEEDBACK_URL),
+                    types.InlineKeyboardButton("📅 Book a meeting", url=MEETING_URL)
                 ]
             ])
     },
@@ -65,7 +67,8 @@ msg_credits = {
             inline_keyboard=[
                 [
                     types.InlineKeyboardButton("🔗 Исходный код", url=GITHUB_URL),
-                    types.InlineKeyboardButton("💬 Поделиться идеей", url=FEEDBACK_URL)
+                    types.InlineKeyboardButton("💬 Поделиться идеей", url=FEEDBACK_URL),
+                    types.InlineKeyboardButton("📅 Запланировать встречу", url=MEETING_URL)
                 ]
             ])
     }
