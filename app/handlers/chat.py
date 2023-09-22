@@ -50,6 +50,10 @@ class ChatHandler(core.BasicHandler):
             history.from_user(message)
             try:
                 answers = await self.answer_to_text(user, message, history)
+                for answer in answers:
+                    history.from_ai(answer)
+                    self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, answer, message.from_user)
+
             except openai.error.InvalidRequestError as e:
                 await chat.aiogram_retry(
                     message.answer,
@@ -57,9 +61,6 @@ class ChatHandler(core.BasicHandler):
                     f"Please try again with a shorter message.\n\n The /donate command is available to support large requests."
                 )
                 self.ctx.telemetry.add_message(core.LARGE_MESSAGE, message, message.from_user)
-            for answer in answers:
-                history.from_ai(answer)
-                self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, answer, message.from_user)
         await self.maybe_show_credits(message, user)
 
     async def answer_to_text(self, user, message, history: chat.ChatHistory):
