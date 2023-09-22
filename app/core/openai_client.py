@@ -5,15 +5,18 @@ __all__ = ['OpenAiClient']
 
 class OpenAiClient(clients.OpenAiClient):
 
-    def __init__(self, api_key):
-        super().__init__(api_key=api_key, system_prompt=system_prompt_assistant, user_prompts=prompts, chunk_length=256)
+    def __init__(self, api_key, telemetry):
+        super().__init__(
+            api_key=api_key, system_prompt=system_prompt_assistant, user_prompts=prompts,
+            chunk_length=256, telemetry=telemetry
+        )
 
     def continue_chat(self, user_id, history, message):
         return self.from_prompt(user_id, 'continue_chat', history=history, message=message)
 
 
 system_prompt_assistant = """
-You are the  helpful, creative, joyful, friendly, trustworthy assistant
+You are the helpful, creative, joyful, friendly, trustworthy assistant
 """.strip()
 
 

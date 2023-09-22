@@ -24,7 +24,11 @@ class ChatMateBot(aiogram_server.TelegramServer):
 
     @cached_property
     def openai_clinet(self):
-        return core.OpenAiClient(self.args['openai_token'])
+        return core.OpenAiClient(self.args['openai_token'], telemetry=self.telemetry)
+
+    @cached_property
+    def telemetry(self):
+        return monitoring.MessageTelemetry(self.pubsub, self.args['project_id'])
 
     @cached_property
     def context(self):
@@ -33,7 +37,7 @@ class ChatMateBot(aiogram_server.TelegramServer):
             pubsub=self.pubsub,
             openai=self.openai_clinet,
             users=self.users,
-            telemetry=monitoring.MessageTelemetry(self.pubsub, self.args['project_id']),
+            telemetry=self.telemetry,
             tts_client=tts.TextToSpeechClient()
         )
 

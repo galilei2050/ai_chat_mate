@@ -25,6 +25,7 @@ from .credits import CreditsHandler
 __all__ = ['ChatHandler']
 
 CHAT_HISTORY_LENGTH = 7
+CHAT_HISTORY_COOLDOWN = datetime.timedelta(minutes=30)
 CREDITS_COOLDOWN = datetime.timedelta(days=5)
 CREDITS_PROBABILITY = 0.05
 MAX_MESSAGE_SIZE = 4096
@@ -61,13 +62,13 @@ class ChatHandler(core.BasicHandler):
                 self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, answer, message.from_user)
         await self.maybe_show_credits(message, user)
 
-    async def answer_to_text(self, user, message, history):
+    async def answer_to_text(self, user, message, history: chat.ChatHistory):
         answers: typing.List[types.Message] = []
         last_answer_began = 0
         letters_written = 0
         async for text in self.ctx.openai.continue_chat(
                 user_id=user.id,
-                history=history.last(CHAT_HISTORY_LENGTH, fmt="openai"),
+                history=history.last(CHAT_HISTORY_LENGTH, fmt="openai", fr=datetime.now() - CHAT_HISTORY_COOLDOWN),
                 message=message.text):
             try:
                 if not answers:
@@ -147,7 +148,7 @@ class ChatHandler(core.BasicHandler):
             )
             buffer.flush()
             with io.FileIO(buffer.name, 'rb') as read_buffer:
-                text = await self.ctx.openai.transcribe(read_buffer)
+                text = await self.ctx.openai.transcribe(user_id=message.from_user.id, audio=read_buffer)
                 await chat.aiogram_retry(placeholder.edit_text, f"🎙 Transcription is: \"{text}\"")
                 return text
 
