@@ -9,7 +9,9 @@ from functools import cached_property
 from aiogram import types, dispatcher
 from aiogram.utils import callback_data
 
+from baski.telegram import storage
 from baski.telegram import receptionist
+from baski.primitives import datetime
 
 
 __all__ = ['register_donate_handlers']
@@ -21,7 +23,7 @@ _DONATION_CB_DATA = callback_data.CallbackData("donation", "amount")
 
 def register_donate_handlers(rp: receptionist.Receptionist, ctx: core.Context, payment_token):
     donate_handler = DonateHandler(ctx, payment_token)
-    rp.add_message_handler(donate_handler, commands=['donate', 'support'])
+    rp.add_message_handler(donate_handler, commands=['donate', 'support', 'donation'])
     rp.add_message_handler(donate_handler, content_types=types.ContentType.SUCCESSFUL_PAYMENT)
     rp.add_button_callback(donate_handler, _DONATION_CB_DATA.filter())
     rp.add_pre_checkout_handler(donate_handler, lambda x: x.invoice_payload.startswith('donation'))
@@ -78,9 +80,13 @@ class DonateHandler(core.BasicHandler):
             )
         )
 
-    async def on_message(self, message: types.Message, state: dispatcher.FSMContext, *args, **kwargs):
+    async def on_message(
+            self, message: types.Message, state: dispatcher.FSMContext,
+            user: core.TelegramUser,
+            *args, **kwargs
+    ):
         if types.ContentType.SUCCESSFUL_PAYMENT == message.content_type:
-            await self.finish_donation(message)
+            await self.finish_donation(message, user, self.ctx.users)
         else:
             await message.answer(
                 **msg_start_donation.get(
@@ -90,9 +96,11 @@ class DonateHandler(core.BasicHandler):
             )
             self.ctx.telemetry.add_message(core.CMD_DONATE, message, message.from_user)
 
-    async def finish_donation(self, message: types.Message):
+    async def finish_donation(self, message: types.Message, user: core.TelegramUser, users: storage.UsersStorage):
         sp = message.successful_payment
         donation_id = sp.invoice_payload
+        user.last_donation = datetime.now()
+        users.set(user)
         await asyncio.gather(
             self.donation_collection.document(donation_id).update(
                 {

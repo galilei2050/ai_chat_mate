@@ -29,6 +29,10 @@ CHAT_HISTORY_COOLDOWN = datetime.timedelta(minutes=30)
 CREDITS_COOLDOWN = datetime.timedelta(days=5)
 CREDITS_PROBABILITY = 0.05
 MAX_MESSAGE_SIZE = 4096
+LARGE_REQUEST_DONATE_MESSAGE = (
+    f"The basic model is unable to handle large requests. \n"
+    f"To proceed with your request, make a /donation to unblock large requests."
+)
 
 
 class ChatHandler(core.BasicHandler):
@@ -55,22 +59,19 @@ class ChatHandler(core.BasicHandler):
                     self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, answer, message.from_user)
 
             except openai.error.InvalidRequestError as e:
-                await chat.aiogram_retry(
-                    message.answer,
-                    f"Large request are not supported yet. "
-                    f"Please try again with a shorter message.\n\n The /donate command is available to support large requests."
-                )
+                await chat.aiogram_retry(message.answer, LARGE_REQUEST_DONATE_MESSAGE)
                 self.ctx.telemetry.add_message(core.LARGE_MESSAGE, message, message.from_user)
         await self.maybe_show_credits(message, user)
 
-    async def answer_to_text(self, user, message, history: chat.ChatHistory):
+    async def answer_to_text(self, user: core.TelegramUser, message, history: chat.ChatHistory):
         answers: typing.List[types.Message] = []
         last_answer_began = 0
         letters_written = 0
         async for text in self.ctx.openai.continue_chat(
                 user_id=user.id,
                 history=history.last(CHAT_HISTORY_LENGTH, fmt="openai", fr=datetime.now() - CHAT_HISTORY_COOLDOWN),
-                message=message.text):
+                message=message.text,
+                use_large=user.is_premium()):
             try:
                 if not answers:
                     if text:
