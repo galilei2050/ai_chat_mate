@@ -162,11 +162,11 @@ def dontation_keyboard():
 msg_payment = {
     "en": {
         "title": "Project support ❤️",
-        "description": "Your participation is invaluable! We love you\n"
+        "description": "Finish your donation by pressing the Pay button below ⬇️\n"
     },
     "ru": {
         "title": "Поддержка проекта ❤️",
-        "description": "Ваше участие невозможно переоценить!\n"
+        "description": "Завершите пожертвование, нажав кнопку «Оплатить» ниже ⬇️\n"
     }
 }
 
