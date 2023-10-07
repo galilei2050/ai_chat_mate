@@ -7,31 +7,27 @@ import core
 from google.cloud import firestore
 from functools import cached_property
 from aiogram import types, dispatcher
-from aiogram.utils import callback_data
 
 from baski.telegram import storage
 from baski.telegram import receptionist
 from baski.primitives import datetime
+from keyboards import DONATION_CB_DATA, dontation_keyboard
 
 
 __all__ = ['register_donate_handlers']
-
-from core import Context
-
-_DONATION_CB_DATA = callback_data.CallbackData("donation", "amount")
 
 
 def register_donate_handlers(rp: receptionist.Receptionist, ctx: core.Context, payment_token):
     donate_handler = DonateHandler(ctx, payment_token)
     rp.add_message_handler(donate_handler, commands=['donate', 'support', 'donation'])
     rp.add_message_handler(donate_handler, content_types=types.ContentType.SUCCESSFUL_PAYMENT)
-    rp.add_button_callback(donate_handler, _DONATION_CB_DATA.filter())
+    rp.add_button_callback(donate_handler, DONATION_CB_DATA.filter())
     rp.add_pre_checkout_handler(donate_handler, lambda x: x.invoice_payload.startswith('donation'))
 
 
 class DonateHandler(core.BasicHandler):
 
-    def __init__(self, ctx: Context, payment_token):
+    def __init__(self, ctx: core.Context, payment_token):
         super().__init__(ctx)
         self.payment_token = payment_token
 
@@ -146,17 +142,6 @@ class DonateHandler(core.BasicHandler):
     @cached_property
     def donation_collection(self) -> firestore.AsyncCollectionReference:
         return self.ctx.db.collection('payment')
-
-
-def dontation_keyboard():
-    return types.InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                types.InlineKeyboardButton(text=text, callback_data=_DONATION_CB_DATA.new(amount=amount))
-                for text, amount in [('$1 🕯️', '100'), ('5$ ☕', '500'), ('10$ 🥪', '1000'), ('$25 💳', '2500')]
-            ]
-        ]
-    )
 
 
 msg_payment = {

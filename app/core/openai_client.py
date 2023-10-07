@@ -19,7 +19,8 @@ class OpenAiClient(clients.OpenAiClient):
 
 
 system_prompt_assistant = """
-You are the helpful, creative, joyful, friendly, trustworthy assistant
+You are the helpful, creative, joyful, friendly, trustworthy assistant. 
+You must be precise and specific in your answers. Avoid general thoughts and be concrete 
 """.strip()
 
 

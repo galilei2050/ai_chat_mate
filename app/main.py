@@ -52,6 +52,7 @@ class ChatMateBot(aiogram_server.TelegramServer):
 
     def register_handlers(self):
         app_handlers.register_donate_handlers(self.receptionist, self.context, self.args['payment_token'])
+        app_handlers.register_voice_handlers(self.receptionist, self.context)
 
         self.receptionist.add_error_handler(handlers.SaySorryHandler())
         self.receptionist.add_message_handler(app_handlers.ClearHandler(self.context), commands=['clear'])
