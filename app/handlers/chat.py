@@ -7,6 +7,8 @@ import typing
 
 from aiogram import types, dispatcher
 from aiogram.utils.exceptions import MessageNotModified, RetryAfter, TelegramAPIError
+
+from baski.concurrent import as_task
 from baski.telegram import chat, storage, monitoring
 from baski.primitives import datetime
 from baski.pattern import retry
@@ -40,7 +42,7 @@ class ChatHandler(core.BasicHandler):
     ):
         if message.voice:
             message.text = await self.text_from_voice(message)
-        await chat.aiogram_retry(message.chat.do, "typing")
+        typing_task = as_task(chat.aiogram_retry(message.chat.do, "typing"))
         self.ctx.telemetry.add_message(monitoring.MESSAGE_IN, message, message.from_user)
 
         user: storage.TelegramUser = kwargs.get('user')
@@ -48,6 +50,7 @@ class ChatHandler(core.BasicHandler):
             history = chat.ChatHistory(proxy)
             history.from_user(message)
             try:
+                await typing_task
                 answers = await self.answer_to_text(user, message, history)
                 for answer in answers:
                     history.from_ai(answer)
