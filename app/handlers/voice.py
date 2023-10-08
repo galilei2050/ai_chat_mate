@@ -7,7 +7,7 @@ from google.cloud import texttospeech as tts
 from langdetect import LangDetectException
 
 from aiogram import dispatcher, types
-from baski.telegram import receptionist, chat
+from baski.telegram import receptionist, chat, monitoring
 from baski.concurrent import as_async
 
 import core
@@ -19,26 +19,34 @@ def register_voice_handlers(rp: receptionist.Receptionist, ctx: core.Context):
     rp.add_button_callback(voice_handler, VOICE_CB_DATA.filter())
 
 
-class VoiceHandler(core.PremiumHandler, core.BasicHandler):
+class VoiceHandler(core.PremiumHandler):
 
     FEATURE_ID = 'voice_msg_out'
 
     async def on_callback(self, callback_query: types.CallbackQuery, state: dispatcher.FSMContext, *args, **kwargs):
-        await self.send_voice(callback_query.message, callback_query.message.text)
+        ai_message = callback_query.message
+        self.ctx.telemetry.add(callback_query.from_user.id, core.BTN_VOICE_MSG, {})
+        await self.send_voice(ai_message, ai_message.text, callback_query.from_user)
         await chat.aiogram_retry(
             callback_query.message.edit_text,
             callback_query.message.text, reply_markup=None
         )
 
-    async def send_voice(self, message, text):
+    async def send_voice(self, ai_message: types.Message, text, user: types.User = None):
+        await ai_message.chat.do('record_voice')
         try:
             language = langdetect.detect(text)
         except LangDetectException:
             return
         voice = self.get_voice(language)
         if not voice:
-            await chat.aiogram_retry(message.answer, f"Sorry, I don't know how to speak {language} yet")
+            await chat.aiogram_retry(ai_message.answer, f"Sorry, I don't know how to speak {language} yet")
             return
+        audio_content = await self.get_audio_content(text, language, voice)
+        voice_out = await chat.aiogram_retry(ai_message.reply_voice, audio_content)
+        self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, voice_out, user)
+
+    async def get_audio_content(self, text, language, voice):
         synthesis_input = tts.SynthesisInput(text=text)
         voice = tts.VoiceSelectionParams(
             language_code=language, name=voice
@@ -46,14 +54,13 @@ class VoiceHandler(core.PremiumHandler, core.BasicHandler):
         audio_config = tts.AudioConfig(
             audio_encoding=tts.AudioEncoding.OGG_OPUS, speaking_rate=1.0
         )
-        await message.chat.do('record_voice')
         response = await as_async(
             self.ctx.tts_client.synthesize_speech,
             input=synthesis_input,
             voice=voice,
             audio_config=audio_config
         )
-        await chat.aiogram_retry(message.reply_voice, response.audio_content)
+        return response.audio_content
 
     def get_voice(self, language):
         possible_voices = [v for v in self.available_voices if v.startswith(language)]

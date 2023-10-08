@@ -2,7 +2,7 @@ import argparse
 import typing
 
 from functools import cached_property, lru_cache
-from google.cloud import texttospeech as tts, pubsub
+from google.cloud import texttospeech as tts, pubsub, storage as cloud_storage
 from aiogram import types
 from aiogram.dispatcher import storage as aiogram_storage
 
@@ -42,6 +42,10 @@ class ChatMateBot(aiogram_server.TelegramServer):
         )
 
     @cached_property
+    def cloud_storage(self):
+        return cloud_storage.Client()
+
+    @cached_property
     def pubsub(self):
         return pubsub.PublisherClient()
 
@@ -76,7 +80,11 @@ class ChatMateBot(aiogram_server.TelegramServer):
 
     def middlewares(self) -> typing.List:
         return [
-            middleware.UnprocessedMiddleware(self.context.telemetry)
+            middleware.UnprocessedMiddleware(
+                storage_client=self.cloud_storage,
+                storage_bucket='assistant-idk',
+                telemetry=self.context.telemetry
+            )
         ]
 
 
