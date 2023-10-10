@@ -84,6 +84,9 @@ class ChatMateBot(aiogram_server.TelegramServer):
                 storage_client=self.cloud_storage,
                 storage_bucket='assistant-idk',
                 telemetry=self.context.telemetry
+            ),
+            middleware.BlocklistMiddleware(
+                blocklist=[1305849162]
             )
         ]
 
