@@ -46,8 +46,7 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
         assert user is not None, f"User is not set for handler type {obj_name(self)}"
 
         if user.is_premium():
-            await super().__call__(message, *args, state=state, **kwargs)
-            return
+            return await super().__call__(message, *args, state=state, **kwargs)
 
         data = await state.get_data({})
         data.setdefault('feature_tries', {})
@@ -61,14 +60,14 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
 
         if tries < self.FREE_TRIES:
             self.ctx.telemetry.add(message.from_user.id, FREE_TRIAL, payload)
-            await super().__call__(message, *args, state=state, **kwargs)
+            result = await super().__call__(message, *args, state=state, **kwargs)
 
             data = await state.get_data({})
             data.setdefault('feature_tries', {})
             data['feature_tries'][self.FEATURE_ID] = tries + 1
 
             await state.set_data(data)
-            return
+            return result
 
         answer = msg_donate_for_feature.get(
             message.from_user.language_code,
@@ -81,6 +80,7 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
         elif isinstance(message, types.CallbackQuery):
             await chat.aiogram_retry(message.message.answer, **answer)
             self.ctx.telemetry.add(message.from_user.id, MSG_DONATE, payload)
+        return False
 
 
 msg_donate_for_feature = {

@@ -4,3 +4,4 @@ from .basic_handler import *
 from .user import *
 from .event_types import *
 from .exceptions import *
+from .collections import *

@@ -2,13 +2,14 @@ import argparse
 import typing
 
 from functools import cached_property, lru_cache
-from google.cloud import texttospeech as tts, pubsub, storage as cloud_storage
+from google.cloud import texttospeech as tts, pubsub, storage as cloud_storage, vision
 from aiogram import types
 from aiogram.dispatcher import storage as aiogram_storage
 
-from baski.env import get_env
+from baski.env import get_env, project_id
 from baski.server import aiogram_server
 from baski.telegram import storage, filters, handlers, middleware, monitoring
+
 import handlers as app_handlers, core
 
 
@@ -38,7 +39,8 @@ class ChatMateBot(aiogram_server.TelegramServer):
             openai=self.openai_clinet,
             users=self.users,
             telemetry=self.telemetry,
-            tts_client=tts.TextToSpeechClient()
+            tts_client=tts.TextToSpeechClient(),
+            image_client=vision.ImageAnnotatorClient(client_options={'quota_project_id': str(project_id())}),
         )
 
     @cached_property
@@ -63,6 +65,11 @@ class ChatMateBot(aiogram_server.TelegramServer):
         self.receptionist.add_message_handler(app_handlers.StartHandler(self.context), commands=['start'])
         self.receptionist.add_message_handler(app_handlers.CreditsHandler(self.context), commands=['credits'])
         self.receptionist.add_message_handler(
+            app_handlers.PhotoDocumentHandler(self.context),
+            chat_type='private',
+            content_types=[types.ContentType.PHOTO],
+        )
+        self.receptionist.add_message_handler(
             app_handlers.ChatHandler(self.context),
             chat_type='private',
             content_types=[types.ContentType.TEXT, types.ContentType.VOICE]
@@ -73,9 +80,16 @@ class ChatMateBot(aiogram_server.TelegramServer):
 
     @lru_cache()
     def filters(self) -> typing.List:
+        attribution_topic = self.context.pubsub.topic_path(project_id(), core.ATTRIBUTION)
+        filters.Attribution.setup_firestore(self.db.collection(core.ATTRIBUTION))
+        filters.Attribution.setup_pubsub(attribution_topic, self.context.pubsub)
+
         filters.User.setup(self.users)
+        app_filters.PhotoVisionFilter.setup(self.context.image_client)
         return [
-            filters.User
+            filters.User,
+            filters.Attribution,
+            app_filters.PhotoVisionFilter
         ]
 
     def middlewares(self) -> typing.List:
