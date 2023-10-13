@@ -98,7 +98,7 @@ class ChatMateBot(aiogram_server.TelegramServer):
                 telemetry=self.context.telemetry
             ),
             middleware.BlocklistMiddleware(
-                blocklist=[1305849162]
+                blocklist=[]
             )
         ]
 
