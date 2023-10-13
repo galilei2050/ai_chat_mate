@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from google.cloud import firestore, pubsub, texttospeech as tts
+from google.cloud import firestore, pubsub, texttospeech as tts, vision
 from baski.telegram import storage, monitoring
 from .openai_client import OpenAiClient
 
@@ -15,3 +15,4 @@ class Context:
     users: storage.UsersStorage
     telemetry: monitoring.MessageTelemetry
     tts_client: tts.TextToSpeechClient
+    image_client: vision.ImageAnnotatorClient
