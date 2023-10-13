@@ -40,10 +40,10 @@ class PhotoDocumentHandler(core.PremiumHandler, ChatTextHandler):
         if not message.photo:
             raise SkipHandler()
         typing_task = as_task(chat.aiogram_retry(message.chat.do, "typing"))
-
         photo_content = await self.download_photo(message.photo[-1])
 
         if not await self.is_text_document(photo_content):
+            await message.answer("I don't know what to do with this photo. Please, send me a document.")
             raise SkipHandler()
         message.text = await self.get_text(photo_content)
         await super().on_message(message, state, *args, **kwargs)
