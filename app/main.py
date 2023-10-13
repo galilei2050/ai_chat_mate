@@ -85,11 +85,9 @@ class ChatMateBot(aiogram_server.TelegramServer):
         filters.Attribution.setup_pubsub(attribution_topic, self.context.pubsub)
 
         filters.User.setup(self.users)
-        app_filters.PhotoVisionFilter.setup(self.context.image_client)
         return [
             filters.User,
             filters.Attribution,
-            app_filters.PhotoVisionFilter
         ]
 
     def middlewares(self) -> typing.List:

@@ -18,7 +18,7 @@ from .credits import CreditsHandler
 from keyboards import assistant_message_keyboard
 
 
-__all__ = ['ChatHandler']
+__all__ = ['ChatHandler', 'ChatTextHandler']
 
 
 CHAT_HISTORY_LENGTH = 7
@@ -32,7 +32,7 @@ LARGE_REQUEST_DONATE_MESSAGE = (
 )
 
 
-class ChatHandler(core.BasicHandler):
+class ChatTextHandler(core.BasicHandler):
 
     async def on_message(
             self,
@@ -40,12 +40,10 @@ class ChatHandler(core.BasicHandler):
             state: dispatcher.FSMContext,
             *args, **kwargs
     ):
-        if message.voice:
-            message.text = await self.text_from_voice(message)
-        typing_task = as_task(chat.aiogram_retry(message.chat.do, "typing"))
-        self.ctx.telemetry.add_message(monitoring.MESSAGE_IN, message, message.from_user)
-
+        assert message.text, f"Message has no text"
         user: storage.TelegramUser = kwargs.get('user')
+        self.ctx.telemetry.add_message(monitoring.MESSAGE_IN, message, message.from_user)
+        typing_task = as_task(chat.aiogram_retry(message.chat.do, "typing"))
         async with state.proxy() as proxy:
             history = chat.ChatHistory(proxy)
             history.from_user(message)
@@ -59,7 +57,6 @@ class ChatHandler(core.BasicHandler):
             except openai.error.InvalidRequestError as e:
                 await chat.aiogram_retry(message.answer, LARGE_REQUEST_DONATE_MESSAGE)
                 self.ctx.telemetry.add_message(core.LARGE_MESSAGE, message, message.from_user)
-        await self.maybe_show_credits(message, user)
 
     async def answer_to_text(self, user: core.TelegramUser, message, history: chat.ChatHistory):
         answers: typing.List[types.Message] = []
@@ -103,6 +100,22 @@ class ChatHandler(core.BasicHandler):
                 text=answers[-1].text, reply_markup=assistant_message_keyboard()
             )
         return answers
+
+
+class ChatHandler(ChatTextHandler):
+
+    async def on_message(
+            self,
+            message: types.Message,
+            state: dispatcher.FSMContext,
+            *args, **kwargs
+    ):
+        if message.voice:
+            message.text = await self.text_from_voice(message)
+        user: storage.TelegramUser = kwargs.get('user')
+
+        await super().on_message(message, state, *args, **kwargs)
+        await self.maybe_show_credits(message, user)
 
     async def maybe_show_credits(
             self,

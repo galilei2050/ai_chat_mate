@@ -22,13 +22,14 @@ from baski.pattern import retry
 
 
 import core
+from .chat import ChatTextHandler
 
 __all__ = ['PhotoDocumentHandler']
 
 
-class PhotoDocumentHandler(core.PremiumHandler):
+class PhotoDocumentHandler(core.PremiumHandler, ChatTextHandler):
     FEATURE_ID = 'image_msg_in'
-    FREE_TRIES = 20
+    FREE_TRIES = 10
 
     async def on_message(
             self,
@@ -36,19 +37,23 @@ class PhotoDocumentHandler(core.PremiumHandler):
             state: dispatcher.FSMContext,
             *args, **kwargs
     ):
-        if message.photo and await self.is_text_document(message.photo[-1]):
-            await message.reply('TBD')
-            return
-            # message.text = await self.text_from_photo(message)
+        if not message.photo:
+            raise SkipHandler()
+        typing_task = as_task(chat.aiogram_retry(message.chat.do, "typing"))
 
-        raise SkipHandler()
+        photo_content = await self.download_photo(message.photo[-1])
 
-    async def is_text_document(self, photo: types.PhotoSize) -> bool:
-        labels = await self.get_labels(photo)
+        if not await self.is_text_document(photo_content):
+            raise SkipHandler()
+        message.text = await self.get_text(photo_content)
+        await super().on_message(message, state, *args, **kwargs)
+
+    async def is_text_document(self, photo_content: io.BytesIO) -> bool:
+        labels = await self.get_labels(photo_content)
         logging.debug(f"Labels for image: {labels}")
         return set([label['label'] for label in labels]) & {'Font', 'Document'}
 
-    async def get_labels(self, photo: types.PhotoSize) -> typing.List[str]:
+    async def download_photo(self, photo: types.PhotoSize):
         with tempfile.TemporaryDirectory() as tempdir:
             write_io: io.FileIO = await retry(
                 photo.download,
@@ -57,7 +62,16 @@ class PhotoDocumentHandler(core.PremiumHandler):
             )
             write_io.flush()
             with io.FileIO(write_io.name, 'rb') as read_io:
-                image = vision.Image(content=read_io.read())
-                request = dict(image=image, features=[{'type_': vision.Feature.Type.LABEL_DETECTION}])
-                response = await as_async(self.ctx.image_client.annotate_image, request)
-                return [{'label': label.description, 'score': label.score} for label in response.label_annotations]
+                return read_io.read()
+
+    async def get_text(self, photo: io.BytesIO) -> typing.List[str]:
+        image = vision.Image(content=photo)
+        request = dict(image=image, features=[{'type_': vision.Feature.Type.DOCUMENT_TEXT_DETECTION}])
+        response = await as_async(self.ctx.image_client.annotate_image, request)
+        return response.full_text_annotation.text
+
+    async def get_labels(self, photo: io.BytesIO) -> typing.List[str]:
+        image = vision.Image(content=photo)
+        request = dict(image=image, features=[{'type_': vision.Feature.Type.LABEL_DETECTION}])
+        response = await as_async(self.ctx.image_client.annotate_image, request)
+        return [{'label': label.description, 'score': label.score} for label in response.label_annotations]

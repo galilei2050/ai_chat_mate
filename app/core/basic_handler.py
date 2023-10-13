@@ -1,3 +1,4 @@
+import logging
 import typing
 from aiogram import types, dispatcher
 
@@ -28,7 +29,6 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
     FREE_TRIES = 20
 
     def __init__(self, ctx: Context):
-        super().__init__()
         self._ctx = ctx
 
     @property
@@ -46,6 +46,7 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
         assert user is not None, f"User is not set for handler type {obj_name(self)}"
 
         if user.is_premium():
+            logging.debug(f"Feature {self.FEATURE_ID} enabled for premium {user.id} user")
             return await super().__call__(message, *args, state=state, **kwargs)
 
         data = await state.get_data({})
@@ -64,8 +65,9 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
 
             data = await state.get_data({})
             data.setdefault('feature_tries', {})
+            tries = data['feature_tries'].setdefault(self.FEATURE_ID, 0)
             data['feature_tries'][self.FEATURE_ID] = tries + 1
-
+            logging.debug(f"Feature {self.FEATURE_ID} free trial {tries} for {user.id} user")
             await state.set_data(data)
             return result
 
@@ -88,6 +90,7 @@ msg_donate_for_feature = {
         "text": "This feature is available for users who support the project. "
                 "Please make any /donation to unblock this feature and much more: \n\n"
                 " 🎙 Voice messages\n"
+                " 🖼️ Image requests\n"
                 " 😆 Large requests\n"
                 " 🆕 All new features\n"
                 " 🤖 No ads\n"
@@ -98,7 +101,8 @@ msg_donate_for_feature = {
         "text": "Эта функция доступна для пользователей, поддерживающих проект. "
                 "Пожалуйста, сделайте любое /donation, чтобы разблокировать эту функцию и многое другое: \n"
                 " 🎙 Голосовые сообщения\n"
-                " 😆 Большой обьем текста в запросе\n"
+                " 🖼️ Распознавание текста в изображениях"
+                " 😆 Большой обем текста в запросе\n"
                 " 🆕 Все новые функции\n"
                 " 🤖 Без рекламы\n",
         "reply_markup": dontation_keyboard()
