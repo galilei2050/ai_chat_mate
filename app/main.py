@@ -29,7 +29,7 @@ class ChatMateBot(aiogram_server.TelegramServer):
 
     @cached_property
     def telemetry(self):
-        return monitoring.MessageTelemetry(self.pubsub, self.args['project_id'])
+        return monitoring.MessageTelemetry(self.pubsub, self.args['project_id'], publish=self.args['cloud'])
 
     @cached_property
     def context(self):

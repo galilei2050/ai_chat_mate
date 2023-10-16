@@ -64,7 +64,6 @@ class DonateHandler(core.BasicHandler):
             callback_query.message.delete(),
             callback_query.bot.send_invoice(
                 chat_id=callback_query.message.chat.id,
-                photo_url='https://storage.googleapis.com/assistant-public-assets/smart_man.png',
                 payload=donation['id'],
                 provider_token=self.payment_token,
                 currency="USD",
@@ -147,11 +146,11 @@ class DonateHandler(core.BasicHandler):
 msg_payment = {
     "en": {
         "title": "Project support ❤️",
-        "description": "Finish your donation by pressing the Pay button below ⬇️\n"
+        "description": "Finish your donation by pressing the Pay button below ⬇️\nPlease let us know at https://t.me/galilei if you have any issues .",
     },
     "ru": {
         "title": "Поддержка проекта ❤️",
-        "description": "Завершите пожертвование, нажав кнопку «Оплатить» ниже ⬇️\n"
+        "description": "Завершите пожертвование, нажав кнопку «Оплатить» ниже ⬇️\nСвяжитесь с нами по адресу https://t.me/galilei, если у вас возникли какие-либо проблемы."
     }
 }
 
