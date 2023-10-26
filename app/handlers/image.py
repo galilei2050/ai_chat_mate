@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import typing
 import io
@@ -10,19 +9,15 @@ from aiogram.utils.exceptions import TelegramAPIError
 
 
 from google.cloud import vision
-from baski.pattern import retry
-from baski.telegram import chat
-from baski.concurrent import as_async, as_task
-
+from baski.concurrent import as_async
 
 from baski.concurrent import as_task
-from baski.telegram import chat, storage, monitoring
-from baski.primitives import datetime
+from baski.telegram import chat
 from baski.pattern import retry
 
 
 import core
-from .chat import ChatTextHandler
+from .text import ChatTextHandler
 
 __all__ = ['PhotoDocumentHandler']
 
