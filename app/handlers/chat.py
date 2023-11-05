@@ -22,8 +22,8 @@ CREDITS_PROBABILITY = 0.05
 
 class ChatHandler(core.PremiumHandler, ChatTextHandler):
     FEATURE_ID = 'normal_chat'
-    FREE_TRIES = 5
-    PERIOD = datetime.timedelta(minutes=15)
+    FREE_TRIES = 3
+    PERIOD = datetime.timedelta(minutes=60)
 
     async def on_message(
             self,
@@ -75,10 +75,10 @@ class ChatHandler(core.PremiumHandler, ChatTextHandler):
 
 msg_cool_down = {
     "en":
-        f"I'm tired. Now I can only process {ChatHandler.FREE_TRIES} messages per 15 minutes."
+        f"I'm tired. Now I can only process {ChatHandler.FREE_TRIES} messages per hour."
         "Please wait some time or make any /donation to unblock unlimited messaging and much more: \n\n",
 
     "ru":
-        f"Много запросов. Я могу обрабатывать {ChatHandler.FREE_TRIES} сообщений каждые 15 минут."
+        f"Много запросов. Я могу обрабатывать {ChatHandler.FREE_TRIES} сообщений каждый час."
         "Пожалуйста подождите какое-то время или сделайте любое /donation, чтобы общаться сколько угодно а так же: \n\n"
 }
