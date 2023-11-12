@@ -8,7 +8,7 @@ class OpenAiClient(clients.OpenAiClient):
     def __init__(self, api_key, telemetry):
         super().__init__(
             api_key=api_key, system_prompt=system_prompt_assistant, user_prompts=prompts,
-            chunk_length=256, telemetry=telemetry
+            chunk_length=1024, telemetry=telemetry
         )
 
     def continue_chat(self, user_id, history, message, use_large=False):
