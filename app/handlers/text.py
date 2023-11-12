@@ -73,10 +73,10 @@ class ChatTextHandler(core.BasicHandler):
                         answers[-1].edit_text,
                         text=answers[-1].text, reply_markup=assistant_message_keyboard()
                     )
-                    last_answer_began = letters_written
                     answer = await chat.aiogram_retry(message.answer, text[letters_written:])
                     if answer:
                         answers.append(answer)
+                        last_answer_began = letters_written
                 else:
                     if answers[-1].text != text[last_answer_began:]:
                         answer = await chat.aiogram_retry(answers[-1].edit_text, text=text[last_answer_began:])
