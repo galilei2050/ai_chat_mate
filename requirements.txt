@@ -27,5 +27,5 @@ scipy
 pandas
 
 # AI stuff
-openai
+openai<1.0.0
 langdetect
