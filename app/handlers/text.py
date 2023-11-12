@@ -82,7 +82,7 @@ class ChatTextHandler(core.BasicHandler):
                         answer = await chat.aiogram_retry(answers[-1].edit_text, text=text[last_answer_began:])
                         if answer:
                             answer[-1] = answer
-                letters_written = len(text)
+                            letters_written = len(text)
                 await chat.aiogram_retry(message.chat.do, "typing")
             except MessageNotModified as e:
                 pass
