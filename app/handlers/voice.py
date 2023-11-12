@@ -44,7 +44,8 @@ class VoiceHandler(core.PremiumHandler):
             return
         audio_content = await self.get_audio_content(text, language, voice)
         voice_out = await chat.aiogram_retry(ai_message.reply_voice, audio_content)
-        self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, voice_out, user)
+        if voice_out:
+            self.ctx.telemetry.add_message(monitoring.MESSAGE_OUT, voice_out, user)
 
     async def get_audio_content(self, text, language, voice):
         synthesis_input = tts.SynthesisInput(text=text)

@@ -53,7 +53,8 @@ class PhotoDocumentHandler(core.PremiumHandler, ChatTextHandler):
             write_io: io.FileIO = await retry(
                 photo.download,
                 exceptions=(TelegramAPIError,),
-                destination_dir=tempdir
+                destination_dir=tempdir,
+                service_name="Telegram"
             )
             write_io.flush()
             with io.FileIO(write_io.name, 'rb') as read_io:

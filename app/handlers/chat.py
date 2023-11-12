@@ -58,7 +58,8 @@ class ChatHandler(core.PremiumHandler, ChatTextHandler):
             buffer = await retry(
                 message.voice.download,
                 exceptions=(TelegramAPIError,),
-                destination_dir=tempdir
+                destination_dir=tempdir,
+                service_name="Telegram"
             )
             buffer.flush()
             with io.FileIO(buffer.name, 'rb') as read_buffer:
