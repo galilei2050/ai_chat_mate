@@ -2,6 +2,7 @@ from aiogram import types
 from baski.primitives import datetime
 from baski.telegram import storage
 import core
+import keyboards
 
 __all__ = ['CreditsHandler']
 
@@ -36,40 +37,10 @@ MEETING_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/A
 msg_credits = {
     "en": {
         "parse_mode": "MarkdownV2",
-        "text": "This bot is developed 🛠️ by @galilei\. "
-                "You are more than welcome to reach out with a suggestion or complain\."
-                "\n\nYour conversation is safe \- "
-                "bot never stores any of your messages without your explicit permission\. "
-                "The code is open\. Feel free to review the GitHub page\. "
-                "\n\nIf this bot is useful for you it will be useful for your friends\. "
-                "\n\n*We need your help to spread the word about this bot*\. Feel free to share it with your friends and colleagues"
-                "\n\nTo support the project you can /donate to the author\, or just leave a feedback\."
+        "text": "Your conversation is safe \- the bot is saving only the last ten messages to keep the context of the conversation\."
+                "\n\nWe need your help to spread the word about this bot\. Feel free to share it with your friends and colleagues\."
+                "\n\n*Be a hero who keep the bot alive\! /donate now, or we face a shutdown*\."
                 ,
-        "reply_markup": types.InlineKeyboardMarkup(
-            inline_keyboard=[
-                [
-                    types.InlineKeyboardButton("🔗 Source code", url=GITHUB_URL),
-                    types.InlineKeyboardButton("💬 Leave feedback", url=FEEDBACK_URL),
-                    types.InlineKeyboardButton("📅 Book a meeting", url=MEETING_URL)
-                ]
-            ])
-    },
-    "ru": {
-        "parse_mode": "MarkdownV2",
-        "text": "«Этот бот разработан @galilei\. "
-                "Вы всегда можете обратиться с предложением или жалобой\. "
-                "\n\nВаш разговор в безопасности \— "
-                "бот никогда не сохраняет ваши сообщения без вашего явного разрешения\. "
-                "Код открыт\. Посетите страницу проекта на GitHub"
-                "\n\nЕсли этот бот полезен для вас\, он будет полезен и для ваших друзей\. "
-                "Пожалуйста\, не стесняйтесь поделиться им c друзьями и коллегами",
-        "reply_markup": types.InlineKeyboardMarkup(
-            inline_keyboard=[
-                [
-                    types.InlineKeyboardButton("🔗 Исходный код", url=GITHUB_URL),
-                    types.InlineKeyboardButton("💬 Поделиться идеей", url=FEEDBACK_URL),
-                    types.InlineKeyboardButton("📅 Запланировать встречу", url=MEETING_URL)
-                ]
-            ])
+        "reply_markup": keyboards.dontation_keyboard()
     }
 }
