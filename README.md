@@ -1,5 +1,6 @@
 # Telegram Bot for ChatGPT 
 
+
 It is handy to have chat GPT in your pocket close to chats with friends and family
 In this repository is implementation of the https://t.me/ai_chat_mate_bot bot. 
 
