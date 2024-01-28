@@ -86,7 +86,7 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
         Function tell user that the project is closed and thank him for using it
         """
         await message.answer(
-            "🤖 Sorry, but this project is closed. "
+            "🤖 Sorry, but this project is closed. Unfortunately, we didn't find a way to make it profitable. "
             "Thank you for using it. "
         )
 
