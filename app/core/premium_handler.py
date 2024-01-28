@@ -42,7 +42,15 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
         if user.is_premium():
             logging.debug(f"Feature {self.FEATURE_ID} enabled for premium {user.id} user")
             return await super().__call__(message, *args, state=state, **kwargs)
+        await self.say_we_are_closed(message)
+        return
 
+    async def free_flow(
+            self,
+            message: typing.Union[types.CallbackQuery, types.Message],
+            state: dispatcher.FSMContext,
+            *args, **kwargs
+    ):
         tries_count = await self.get_tries_count(state)
         telemetry_payload = {
             "feature": self.FEATURE_ID,
@@ -72,6 +80,15 @@ class PremiumHandler(handlers.LogErrorHandler, handlers.TypedHandler):
             else:
                 raise TypeError(f"Unknown message type {type(message)}")
             return False
+
+    async def say_we_are_closed(self, message: types.Message):
+        """
+        Function tell user that the project is closed and thank him for using it
+        """
+        await message.answer(
+            "🤖 Sorry, but this project is closed. "
+            "Thank you for using it. "
+        )
 
     async def update_tries(self, state: dispatcher.FSMContext):
         data = await state.get_data({})
