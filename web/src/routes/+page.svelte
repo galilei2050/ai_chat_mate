@@ -43,8 +43,8 @@
         </ul>
     </div>
 
-    <div class="w-10/12 flex flex-col mt-2 mb-2">
-        <div class="overflow-y-auto ">
+    <div class="w-10/12 flex flex-col mt-2 mb-2 ">
+        <div class="overflow-y-auto grow ">
             <div id="messages" class="flex-grow block">
                 <div class="py-4 px-20 w-8/12 mr-auto">
                     <string class="font-bold">AI:</string>
