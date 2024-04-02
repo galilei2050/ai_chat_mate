@@ -1,8 +1,16 @@
 <script lang="ts">
-    // import {current_thread_id} from ""
+    import current_thread_id from "./store";
+
+    let select_thread_id: string = "";
+
+    current_thread_id.subscribe(value => {
+        select_thread_id = value;
+    });
+
     export let threads;
 </script>
 
+{@debug select_thread_id}
 <ul class="mx-6 my-8">
     {#each threads as thread}
         <li class="my-6">
@@ -15,7 +23,12 @@
                               fill="#1C1C1C"/>
                     </svg>
                 </span>
-                    <span class="ml-4">{thread.title}</span>
+                    {#if thread.id == select_thread_id}
+                        <span class="ml-4 font-bold">{thread.title}</span>
+                    {:else }
+                        <span class="ml-4">{thread.title}</span>
+
+                    {/if}
                 </div>
             </a>
         </li>

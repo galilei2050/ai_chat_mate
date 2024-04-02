@@ -1,7 +1,10 @@
 export function load({params}) {
-    return {
-        thread_id: params.thread_id,
-        messages: [
+    /**
+     * @type {{ role: string; content: string; }[]}
+     */
+    let messages = []
+    if (params.thread_id == "1") {
+        messages = [
             {
                 role: 'user',
                 content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
@@ -23,5 +26,9 @@ export function load({params}) {
                 content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
             }
         ]
+    }
+    return {
+        thread_id: params.thread_id,
+        messages: messages
     }
 }
