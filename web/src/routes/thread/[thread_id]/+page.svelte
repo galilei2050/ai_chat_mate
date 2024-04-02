@@ -8,7 +8,6 @@
 
     afterUpdate(async () => {
         current_thread_id.set(data.thread_id);
-        console.log('the component just updated ' + data.thread_id);
     });
 </script>
 

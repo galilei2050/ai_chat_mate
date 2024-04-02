@@ -10,7 +10,6 @@
     export let threads;
 </script>
 
-{@debug select_thread_id}
 <ul class="mx-6 my-8">
     {#each threads as thread}
         <li class="my-6">
