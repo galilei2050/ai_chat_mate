@@ -1,8 +1,8 @@
 <script lang="ts">
-
+    import {enhance} from "$app/forms";
 </script>
 
-<form class="mx-auto w-8/12 flex relative" method="POST">
+<form class="mx-auto w-8/12 flex relative" method="POST" use:enhance>
     <input name="id" type="hidden" value={crypto.randomUUID()}>
     <input class="rounded-xl py-4 pl-6 pr-12 bg-neutral-100 mr-1 w-full overflow-hidden focus:outline-neutral-200 " name="message"
            placeholder="Type your message..."

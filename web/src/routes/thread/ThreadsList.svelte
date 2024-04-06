@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { fly, slide } from "svelte/transition";
     import current_thread_id from "./store";
 
     let select_thread_id: string = "";
@@ -12,7 +13,7 @@
 
 <ul class="mx-6 my-8">
     {#each threads as thread}
-        <li class="my-6">
+        <li class="my-6" in:fly={{ y: 20 }} out:slide >
             <a href="/thread/{thread.id}" class="hover:underline hover:font hover:decoration-double">
                 <div class="flex items-center">
                 <span>
