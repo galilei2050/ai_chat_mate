@@ -1,0 +1,98 @@
+swagger: "2.0"
+info:
+  title: Web API for the web page
+  description: "Get the name of an airport from its three-letter IATA code."
+  version: "1.0.0"
+x-google-backend:
+  address: "https://web-mwpqg54jfa-uc.a.run.app"
+schemes:
+  - "https"
+paths:
+  "/":
+    get:
+      operationId: "get_main_page"
+      summary: "Index page"
+      responses:
+        default:
+          description: "Main HTML page"
+
+  "/_app/immutable/{path=**}":
+    get:
+      operationId: "get_immutable_file"
+      summary  : "Static assets"
+      parameters:
+        - name: "path"
+          in: "path"
+          required: true
+          type: "string"
+          description: "Path to the file"
+      responses:
+        default:
+          description: "Content of the file"
+  "/{path=**}/__data.json":
+    get:
+      summary: "SvelteKit data endpoint"
+      operationId: "get_sveltekit_data"
+      parameters:
+        - name: "x-sveltekit-invalidated"
+          in: "query"
+          type: "string"
+          description: "SvelteKit invalidation token"
+        - name: "path"
+          in: "path"
+          required: true
+          type: "string"
+          description: "Route path to resource"
+      responses:
+        default:
+          description: "The name of the airport"
+
+  "/thread/{thread_id}":
+    get:
+      summary: "Get all messages in a thread"
+      operationId: "get_thread"
+      parameters:
+        - name: "thread_id"
+          in: "path"
+          required: true
+          type: "string"
+          description: "The ID of the thread"
+      responses:
+        default:
+          description: "HTML Page with thread"
+    post:
+      summary: "Add a new message to a thread"
+      operationId: "post_message_to_thread"
+      parameters:
+        - name: "id"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "The ID of the message"
+        - name: "message"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "thread_id"
+          in: "path"
+          required: true
+          type: "string"
+          description: "The ID of the thread"
+      responses:
+        default:
+          description: "Dummy JSON"
+
+  "/thread":
+    get:
+      summary: "Get all threads"
+      operationId: "get_all_threads"
+      responses:
+        default:
+          description: "HTML Page with all threads"
+
+    post:
+      summary: "Create a new thread"
+      operationId: "post_new_thread"
+      responses:
+        default:
+          description: "Dummy JSON"
