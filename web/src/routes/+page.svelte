@@ -1,9 +1,22 @@
 <script lang="ts">
     import {onMount} from 'svelte';
     import {goto} from "$app/navigation";
+    import {session} from "$lib/session";
 
     onMount(() => {
-        goto('/thread')
+        console.log('Mounted main');
+    });
+
+    onMount(() => {
+        session.subscribe((value) => {
+            if (!value?.user) {
+                console.log('redirecting to /login');
+                goto('/login')
+            } else {
+                console.log('redirecting to /thread');
+                goto('/thread')
+            }
+        });
     });
 </script>
 

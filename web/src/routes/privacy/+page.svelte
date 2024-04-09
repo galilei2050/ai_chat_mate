@@ -1,5 +1,10 @@
 <script lang="ts">
     import LegalPage from "$lib/components/LegalPage.svelte";
+    import {onMount} from "svelte";
+
+    onMount(() => {
+        console.log('Mounted Privacy Policy Page');
+    });
 </script>
 
 <LegalPage>
