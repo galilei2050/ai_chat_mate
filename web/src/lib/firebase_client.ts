@@ -17,7 +17,6 @@ const firebaseConfig = {
     apiKey: PUBLIC_FIREBASE_API_KEY,
     authDomain: PUBLIC_ORIGIN,
     projectId: PUBLIC_PROJECT_ID,
-    messagingSenderId: "677393736522",
     appId: PUBLIC_FIREBASE_APP_ID,
     measurementId: PUBLIC_FIREBASE_MEASUREMENT_ID
 }

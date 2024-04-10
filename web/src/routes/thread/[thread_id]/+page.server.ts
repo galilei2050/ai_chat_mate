@@ -1,11 +1,12 @@
 // @ts-ignore
 import { messages } from '../database'
+import { session } from "$lib/session";
 
 export function load({params}) {
     /**
      * @type {{ role: string; content: string; }[]}
      */
-
+    console.log(session?.accessToken)
     return {
         thread_id: params.thread_id,
         messages: messages.get(params.thread_id)

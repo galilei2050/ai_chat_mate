@@ -12,7 +12,7 @@
 </script>
 
 <div class="h-screen flex">
-    <div class="w-2/12 border-r border-r-gray-300">
+    <div class="w-2/12 border-r border-r-gray-300 min-w-48">
         <div class="flex flex-col h-full">
         <div class="mx-4 mt-4 mb-2">
             <NewThreadButton/>
