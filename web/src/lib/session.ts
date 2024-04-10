@@ -3,7 +3,7 @@ import {browser} from '$app/environment';
 import {firebaseAuth} from "$lib/firebase_client";
 import {onAuthStateChanged} from "firebase/auth"
 
-type User = {
+export type User = {
 	email?: string | null;
 	displayName?: string | null;
 	photoURL?: string | null;
@@ -24,7 +24,7 @@ export const initializeSessionChange = () => {
 	onAuthStateChanged(firebaseAuth, (user) => {
 		if (user) {
 			console.log(`User logged in: ${user.email} from ${user.providerId}`)
-			session.set({user: {
+			session.set({ user: {
 				email: user.email,
 				displayName: user.displayName,
 				photoURL: user.photoURL,
