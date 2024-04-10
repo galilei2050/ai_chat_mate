@@ -11,7 +11,7 @@
     export let threads;
 </script>
 
-<ul class="mx-6 my-8">
+<ul>
     {#each threads as thread}
         <li class="my-6" in:fly={{ y: 20 }} out:slide >
             <a href="/thread/{thread.id}" class="hover:underline hover:font hover:decoration-double">

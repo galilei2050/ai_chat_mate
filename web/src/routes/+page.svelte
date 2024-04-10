@@ -7,17 +7,6 @@
         console.log('Mounted main');
     });
 
-    onMount(() => {
-        session.subscribe((value) => {
-            if (!value?.user) {
-                console.log('redirecting to /login');
-                goto('/login')
-            } else {
-                console.log('redirecting to /thread');
-                goto('/thread')
-            }
-        });
-    });
 </script>
 
 

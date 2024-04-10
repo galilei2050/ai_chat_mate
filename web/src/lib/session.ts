@@ -12,6 +12,7 @@ type User = {
 
 export type SessionState = {
 	user: User | null;
+	accessToken?: string | null;
 };
 
 export const session = <Writable<SessionState>>writable();

@@ -2,7 +2,7 @@
     import { enhance } from "$app/forms";
 </script>
 
-<form class="m-4 flex" id="New chat button" method="POST" action="/thread" use:enhance>
+<form class="flex" id="New chat button" method="POST" action="/thread" use:enhance>
     <button class="p-2 flex-grow bg-black text-white rounded-xl shadow-lg flex items-center justify-center">
         <span>
             <svg fill="none" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
