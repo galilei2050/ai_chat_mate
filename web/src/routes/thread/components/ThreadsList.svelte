@@ -1,6 +1,6 @@
 <script lang="ts">
     import { fly, slide } from "svelte/transition";
-    import current_thread_id from "./store";
+    import current_thread_id from "../thread_store";
 
     let select_thread_id: string = "";
 

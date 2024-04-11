@@ -1,12 +1,15 @@
 <script lang="ts">
     import {onMount} from 'svelte';
     import {goto} from "$app/navigation";
-    import {session} from "$lib/session";
 
     onMount(() => {
         console.log('Mounted main');
     });
 
+    onMount(() => {
+        console.log('redirecting to /thread');
+        goto('/thread')
+    });
 </script>
 
 

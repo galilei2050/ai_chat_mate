@@ -1,8 +1,8 @@
 <script lang="ts">
-    import InputBar from "./InputBar.svelte";
-    import Messages from "./Messages.svelte";
+    import InputBar from "./components/InputBar.svelte";
+    import Messages from "./components/Messages.svelte";
     import {afterUpdate} from 'svelte';
-    import current_thread_id from "../store";
+    import current_thread_id from "../thread_store";
 
     let messagesContainer: HTMLDivElement | undefined;
 

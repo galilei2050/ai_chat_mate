@@ -18,6 +18,7 @@
 		"@sveltejs/adapter-node": "^5.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/js-cookie": "^3.0.6",
 		"autoprefixer": "^10.4.19",
 		"postcss": "^8.4.38",
 		"svelte": "^4.2.7",
@@ -29,6 +30,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^10.10.0"
+		"firebase": "^10.10.0",
+		"js-cookie": "^3.0.5",
+		"jwt-decode": "^4.0.0"
 	}
 }
