@@ -29,11 +29,6 @@ class CreditsHandler(core.BasicHandler):
         return await message.answer(**answer)
 
 
-FEEDBACK_URL = "https://3qugszanpzk.typeform.com/to/ifCEiciG"
-GITHUB_URL = "https://github.com/vgalilei/ai_chat_mate"
-MEETING_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2Tah2sMpfGIP_PWb8iIKaB5Uk5lI1wWCOsQtkOMyj7zy1wjDsEI8Ur90nIkx-Ywc27XO_xICiJ?gv=true"
-
-
 msg_credits = {
     "en": {
         "parse_mode": "MarkdownV2",

@@ -25,17 +25,21 @@ build-bot:
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} builds submit ./bot --region ${GOOGLE_CLOUD_REGION} --suppress-logs --tag ${BOT_IMAGE}
 
 deploy-bot:
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy telegram-bot --region ${GOOGLE_CLOUD_REGION} --image ${BOT_IMAGE} \
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} run services telegram-bot update-traffic --to-latest
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy telegram-bot --region ${GOOGLE_CLOUD_REGION} --image ${BOT_IMAGE} && \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic telegram-bot --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-web:
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy web --allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${WEB_IMAGE} && \
-    gcloud --project ${GOOGLE_CLOUD_PROJECT} run services web update-traffic --to-latest
+    gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic web --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-api-gateway:
 	@echo "Use new config $(WEB_API_CONFIG)"
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} api-gateway api-configs create $(WEB_API_CONFIG) --api=web-api --openapi-spec=infra/web_api_config.yml && \
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} api-gateway gateways update web-api-gw --api=web-api --api-config=${WEB_API_CONFIG} --location=${GOOGLE_CLOUD_REGION}
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} api-gateway api-configs create $(WEB_API_CONFIG) --api=web-api \
+		--openapi-spec=infra/web_api_config.yml --backend-auth-service-account=api-gateway@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com \
+		&& \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} api-gateway gateways update web-api-gw --api=web-api \
+	--api-config=${WEB_API_CONFIG} --location=${GOOGLE_CLOUD_REGION} \
+
 
 deploy: deploy-web deploy-bot
 build: build-web build-bot

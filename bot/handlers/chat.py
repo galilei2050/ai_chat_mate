@@ -36,20 +36,6 @@ class ChatHandler(core.PremiumHandler, ChatTextHandler):
         user: storage.TelegramUser = kwargs.get('user')
 
         await super().on_message(message, state, *args, **kwargs)
-        await self.maybe_show_credits(message, user)
-
-    async def maybe_show_credits(
-            self,
-            message: types.Message,
-            user: core.TelegramUser,
-            *args, **kwargs
-    ):
-        if datetime.now() - datetime.as_local(user.last_credits) < CREDITS_COOLDOWN:
-            return
-        if random.random() > CREDITS_PROBABILITY:
-            return
-        credits_message = await CreditsHandler.send_to(message, user, self.ctx.users)
-        self.ctx.telemetry.add_message(core.SHOW_CREDITS, credits_message, message.from_user)
 
     async def text_from_voice(self, message):
         with tempfile.TemporaryDirectory() as tempdir:

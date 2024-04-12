@@ -93,6 +93,14 @@ paths:
     post:
       summary: "Update JWT token"
       operationId: "post_new_jwt_token"
+      parameters:
+        - in: "body"
+          name: Credentails
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
       responses:
         default:
           description: "Empty body"

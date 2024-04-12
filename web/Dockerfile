@@ -23,11 +23,11 @@ FROM node:lts AS serve
 WORKDIR /app
 
 # Copy the build folder from the build stage
-COPY --from=build //package*.json ./
-COPY --from=build //build ./build
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/build ./build
 
 # Install prod dependencies. They are not included into the build folder
 RUN npm install --prod
 
 # Run the application
-CMD node build
+CMD env > .env && node build
