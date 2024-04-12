@@ -13,6 +13,7 @@ RUN npm install
 # Copy the rest of your application's source code
 COPY . .
 
+COPY .env.example .env
 # Build the application
 RUN npm run build
 
@@ -24,6 +25,9 @@ WORKDIR /app
 # Copy the build folder from the build stage
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/build ./build
+
+# Install dependencies
+RUN npm install
 
 # Run the application
 CMD node build

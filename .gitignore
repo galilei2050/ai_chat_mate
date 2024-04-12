@@ -25,14 +25,3 @@ htmlcov/
 # Environments
 .env
 .venv
-
-# -----------------------------
-# Git is unnessesary for build
-.git/
-.gitattributes
-.gitignore
-.github/
-.gitlab-ci.yml
-
-# Tests and RND
-tests/
