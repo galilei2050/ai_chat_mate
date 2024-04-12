@@ -3,8 +3,10 @@ info:
   title: Web API for the web page
   description: "Get the name of an airport from its three-letter IATA code."
   version: "1.0.0"
+host: web-mwpqg54jfa-uc.a.run.app
 x-google-backend:
   address: "https://web-mwpqg54jfa-uc.a.run.app"
+  protocol: h2
 schemes:
   - "https"
 paths:

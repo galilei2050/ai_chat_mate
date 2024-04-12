@@ -25,11 +25,11 @@ build-bot:
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} builds submit ./bot --region ${GOOGLE_CLOUD_REGION} --suppress-logs --tag ${BOT_IMAGE}
 
 deploy-bot:
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy telegram-bot --region ${GOOGLE_CLOUD_REGION} --image ${BOT_IMAGE} && \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy telegram-bot --allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${BOT_IMAGE} && \
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic telegram-bot --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-web:
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy web --allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${WEB_IMAGE} && \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy web --no-allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${WEB_IMAGE} && \
     gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic web --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-api-gateway:
