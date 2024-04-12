@@ -3,6 +3,11 @@
     import {goto} from "$app/navigation";
 
     onMount(() => {
+        console.log('Mounted main');
+    });
+
+    onMount(() => {
+        console.log('redirecting to /thread');
         goto('/thread')
     });
 </script>

@@ -1,5 +1,5 @@
 // @ts-ignore
-import { messages } from '../database'
+import {messages} from '../database'
 
 export function load({params}) {
     /**
