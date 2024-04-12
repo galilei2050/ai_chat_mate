@@ -1,0 +1,25 @@
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Dependencies cache
+node_modules/
+jspm_packages/
+
+# Bulding artifacts
+build
+.svelte-kit
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Vite Stuff
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

@@ -6,7 +6,7 @@ ENV APP_HOME /app
 
 WORKDIR $APP_HOME
 
-COPY ./app ./
+COPY . ./
 COPY requirements.txt ./
 
 # Install production dependencies.

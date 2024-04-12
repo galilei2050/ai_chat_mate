@@ -3,8 +3,10 @@ info:
   title: Web API for the web page
   description: "Get the name of an airport from its three-letter IATA code."
   version: "1.0.0"
+host: web-mwpqg54jfa-uc.a.run.app
 x-google-backend:
   address: "https://web-mwpqg54jfa-uc.a.run.app"
+  protocol: h2
 schemes:
   - "https"
 paths:
@@ -81,6 +83,29 @@ paths:
       responses:
         default:
           description: "Dummy JSON"
+
+  "/login":
+    get:
+      summary: "Get login page"
+      operationId: "get_login_page"
+      responses:
+        default:
+          description: "HTML Page login"
+
+    post:
+      summary: "Update JWT token"
+      operationId: "post_new_jwt_token"
+      parameters:
+        - in: "body"
+          name: Credentails
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
+      responses:
+        default:
+          description: "Empty body"
 
   "/thread":
     get:

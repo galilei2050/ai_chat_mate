@@ -11,6 +11,9 @@ const config = {
         privatePrefix: '',
     },
     kit: {
+        csrf: {
+            checkOrigin: false,
+        },
         csp: {
             directives: {
                 'img-src': [
