@@ -1,12 +1,9 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import {writable} from 'svelte/store';
 
     import ThreadsList from "./components/ThreadsList.svelte";
     import NewThreadButton from "./components/NewThreadButton.svelte";
     import User from "$lib/components/User.svelte";
-
-    export const current_thread_id = writable<string>("");
 
     export let data;
         onMount(() => {

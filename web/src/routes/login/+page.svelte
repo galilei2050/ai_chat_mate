@@ -20,9 +20,8 @@
     let googleButton: HTMLDivElement | null;
     let googleButtonInitialized = false;
 
-    let processCredentials = async (credentails: UserCredential) => {
-        const user = credentails.user;
-        const accessToken = await user.getIdToken(false)
+    let processCredentials = async (credentails: UserCredential) => {;
+        const accessToken = await credentails.user.getIdToken(false)
         fetch('/login', {
             method: "POST",
             headers: [
