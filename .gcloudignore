@@ -36,3 +36,5 @@ htmlcov/
 
 # Tests and RND
 tests/
+http-client.private.env.json
+

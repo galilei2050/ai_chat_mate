@@ -10,7 +10,7 @@ CURRENT_DATETIME:=$(shell date +%Y-%m-%d-%H-%M-%S)
 WEB_API_CONFIG:="web-api-config-$(CURRENT_DATETIME)"
 SHORT_COMMIT_SHA:=$(shell git rev-parse --short HEAD)
 IMAGE_PREFIX:=us.gcr.io/${GOOGLE_CLOUD_PROJECT}/ai_chat
-BOT_IMAGE:=${IMAGE_PREFIX}/bot-image:${SHORT_COMMIT_SHA}
+BACKEND_IMAGE:=${IMAGE_PREFIX}/backend-image:${SHORT_COMMIT_SHA}
 WEB_IMAGE:=${IMAGE_PREFIX}/web-image:${SHORT_COMMIT_SHA}
 
 
@@ -21,16 +21,20 @@ configure:
 build-web:
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} builds submit ./web --region ${GOOGLE_CLOUD_REGION} --suppress-logs --tag ${WEB_IMAGE}
 
-build-bot:
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} builds submit ./bot --region ${GOOGLE_CLOUD_REGION} --suppress-logs --tag ${BOT_IMAGE}
+build-backend:
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} builds submit ./bot --region ${GOOGLE_CLOUD_REGION} --suppress-logs --tag ${BACKEND_IMAGE}
 
 deploy-bot:
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy telegram-bot --allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${BOT_IMAGE} && \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy telegram-bot --allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${BACKEND_IMAGE} && \
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic telegram-bot --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-web:
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy web --no-allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${WEB_IMAGE} && \
     gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic web --to-latest --region ${GOOGLE_CLOUD_REGION}
+
+deploy-backend:
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy backend --no-allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${BACKEND_IMAGE} && \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic backend --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-api-gateway:
 	@echo "Use new config $(WEB_API_CONFIG)"
@@ -45,4 +49,5 @@ deploy: deploy-web deploy-bot
 build: build-web build-bot
 all: build deploy
 web: build-web deploy-web
-bot: build-bot deploy-bot
+bot: build-backend deploy-bot
+backend: build-backend deploy-backend

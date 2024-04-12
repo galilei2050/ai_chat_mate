@@ -1,0 +1,4 @@
+### Create new thread
+
+POST {{host}}/api/thread
+authorization: bearer {{token}}

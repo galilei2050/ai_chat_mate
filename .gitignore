@@ -25,3 +25,4 @@ htmlcov/
 # Environments
 .env
 .venv
+http-client.private.env.json

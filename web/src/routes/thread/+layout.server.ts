@@ -5,17 +5,10 @@ interface Thread {
     title: string;
 }
 
-export function load({params}) {
-    let threads: Array<Thread> = []
-
-    messages.forEach((value, key) => {
-        threads.push({
-            id: key,
-            title: 'Thread ' + key
-        })
-    })
-
+export async function load({params}) {
     return {
-        threads: threads
+            threads: await fetch(
+            '/api/thread'
+        )
     }
 }

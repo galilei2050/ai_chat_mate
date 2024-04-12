@@ -14,4 +14,4 @@ RUN pip install --upgrade pip && pip install --use-pep517 --check-build-dependen
     -r requirements.txt && rm requirements.txt
 
 
-CMD exec python3 -m main
+CMD exec python3 -m bot
