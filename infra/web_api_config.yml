@@ -82,6 +82,21 @@ paths:
         default:
           description: "Dummy JSON"
 
+  "/login":
+    get:
+      summary: "Get login page"
+      operationId: "get_login_page"
+      responses:
+        default:
+          description: "HTML Page login"
+
+    post:
+      summary: "Update JWT token"
+      operationId: "post_new_jwt_token"
+      responses:
+        default:
+          description: "Empty body"
+
   "/thread":
     get:
       summary: "Get all threads"
