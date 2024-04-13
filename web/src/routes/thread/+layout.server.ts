@@ -1,20 +1,12 @@
-import { messages } from "./database";
+import {BACKEND_BASE_URL} from "$env/static/private"
+import {copy_some_headers} from "$lib/server/headers";
 
-interface Thread {
-    id: string;
-    title: string;
-}
-
-export function load({params}) {
-    let threads: Array<Thread> = []
-
-    messages.forEach((value, key) => {
-        threads.push({
-            id: key,
-            title: 'Thread ' + key
-        })
+export async function load({fetch, request, params}) {
+    let url = `${BACKEND_BASE_URL}/api/thread/`
+    const response: Response = await fetch(url, {
+        headers: copy_some_headers(request.headers)
     })
-
+    const threads = await response.json()
     return {
         threads: threads
     }

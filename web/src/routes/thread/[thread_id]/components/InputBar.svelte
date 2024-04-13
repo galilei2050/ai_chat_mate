@@ -2,9 +2,9 @@
     import {enhance} from "$app/forms";
 </script>
 
-<form class="mx-auto w-8/12 flex relative" method="POST" use:enhance>
+<form class="mx-auto w-8/12 flex relative" method="POST" use:enhance action="?/put">
     <input
-            name="id"
+            name="uuid"
             type="hidden"
             value={crypto.randomUUID()}
     >

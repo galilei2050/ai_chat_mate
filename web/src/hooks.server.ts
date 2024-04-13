@@ -13,5 +13,6 @@ export async function handle({event, resolve}) {
         // @ts-ignore
         locals.user = user
     }
+    event.request.headers.set('authorization', 'bearer ' + token)
     return await resolve(event);
 }

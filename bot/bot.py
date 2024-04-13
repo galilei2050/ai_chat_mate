@@ -25,7 +25,7 @@ class ChatMateBot(aiogram_server.TelegramServer):
 
     @cached_property
     def openai_clinet(self):
-        return core.OpenAiClient(self.args['openai_token'], telemetry=self.telemetry)
+        return core.OpenAiClient(telemetry=self.telemetry)
 
     @cached_property
     def telemetry(self):
@@ -51,13 +51,7 @@ class ChatMateBot(aiogram_server.TelegramServer):
     def pubsub(self):
         return pubsub.PublisherClient()
 
-    def add_arguments(self, parser: argparse.ArgumentParser):
-        super().add_arguments(parser)
-        parser.add_argument('--openai-token', help='OpenAI API token', default=str(get_env('OPENAI_TOKEN', '')))
-        parser.add_argument('--payment-token', help="Telegram payment token", default=str(get_env("PAYMENT_TOKEN", "")))
-
     def register_handlers(self):
-        app_handlers.register_donate_handlers(self.receptionist, self.context, self.args['payment_token'])
         app_handlers.register_voice_handlers(self.receptionist, self.context)
 
         self.receptionist.add_error_handler(handlers.SaySorryHandler())
