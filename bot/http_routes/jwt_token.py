@@ -1,6 +1,7 @@
 import logging
 
 from fastapi.security import OAuth2PasswordBearer
+from firebase_admin.auth import UserInfo
 from firebase_admin.exceptions import InvalidArgumentError
 from fastapi import Depends
 from baski.concurrent import as_async
@@ -17,7 +18,7 @@ firebase_app=initialize_app()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", auto_error=False)
 
 
-async def get_user(token: Annotated[str, Depends(oauth2_scheme)], request: Request):
+async def get_user(token: Annotated[str, Depends(oauth2_scheme)], request: Request) -> UserInfo:
     if not token:
         logging.error(f"Token not found for request")
         raise HTTPException(HTTPStatus.FORBIDDEN.value, HTTPStatus.FORBIDDEN.phrase)

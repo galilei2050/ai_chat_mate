@@ -14,7 +14,7 @@
 <ul>
     {#each threads as thread}
         <li class="my-6" in:fly={{ y: 20 }} out:slide >
-            <a href="/thread/{thread.id}" class="hover:underline hover:font hover:decoration-double">
+            <a href="/thread/{thread.uuid}" class="hover:underline hover:font hover:decoration-double">
                 <div class="flex items-center">
                 <span>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -23,7 +23,7 @@
                               fill="#1C1C1C"/>
                     </svg>
                 </span>
-                    {#if thread.id == select_thread_id}
+                    {#if thread.uuid == select_thread_id}
                         <span class="ml-4 font-bold">{thread.title}</span>
                     {:else }
                         <span class="ml-4">{thread.title}</span>
