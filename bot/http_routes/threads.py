@@ -126,11 +126,15 @@ async def add_message(
     while len(new_title) < 12:
         title = new_title
         new_title = ' '.join(message.content.split(' ')[:num_words] + ['...'])
+        if title == new_title:
+            break
         num_words+=1
 
-    _, (_, message_doc_ref), (_, ai_doc_ref) = await asyncio.gather(
-        thread_doc_ref.set({'title': title}, merge=True),
+    (_, message_doc_ref), (_, ai_doc_ref) = await asyncio.gather(
         messages.add(message.dict(), document_id=str(message.uuid)),
         messages.add(ai_message.dict(), document_id=str(ai_message.uuid))
     )
+    if title:
+        await thread_doc_ref.set({'title': title}, merge=True),
+
     background_tasks.add_task(next_message, user.uid, thread_doc_ref, ai_doc_ref)
