@@ -8,9 +8,9 @@ export const POST: RequestHandler = async ({request, cookies}) => {
         "token",
         data.accessToken,
         {
-            httpOnly: !dev,
-            secure: !dev,
-            sameSite: dev ? "lax" : "none",
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
             path: '/'
         }
     )

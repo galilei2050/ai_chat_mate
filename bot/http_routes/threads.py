@@ -15,6 +15,7 @@ class Message(BaseModel):
 
 class Thread(BaseModel):
     id: str
+    title: str
     messages: typing.List[Message]
     created_at: datetime.datetime
 
@@ -35,7 +36,7 @@ async def create_new_thread(user=Depends(get_user)):
     Create new thread for a user
     """
     print(f"create thread for user {user}")
-    return Thread(id='fake', messages=[], created_at=datetime.now())
+    return Thread(id='fake', title="New thread", messages=[], created_at=datetime.now())
 
 
 @router.get("/{thread_id}", response_model=typing.List[Message])

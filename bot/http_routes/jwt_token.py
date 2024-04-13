@@ -17,9 +17,9 @@ firebase_app=initialize_app()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", auto_error=False)
 
 
-async def get_user(authorization: Annotated[str | None, Header()], request: Request):
-    print(request.headers)
-    if not authorization:
+async def get_user(token: Annotated[str, Depends(oauth2_scheme)], request: Request):
+    if not token:
+        logging.error(f"Token not found for request")
         raise HTTPException(HTTPStatus.FORBIDDEN.value, HTTPStatus.FORBIDDEN.phrase)
     try:
         decoded_token = await as_async(auth.verify_id_token, token, firebase_app)
