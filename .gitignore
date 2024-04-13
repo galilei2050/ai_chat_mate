@@ -11,7 +11,7 @@ coverage
 .idea
 .vscode
 .kdev4
-http-client.private.env.json/
+http-client.private.env.json
 
 # Unit test / coverage reports
 junit.xml

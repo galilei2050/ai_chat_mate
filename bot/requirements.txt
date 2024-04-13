@@ -25,6 +25,7 @@ aiogram<3.0
 aiohttp
 fastapi
 uvicorn
+python-jose
 
 # Data stuff
 scipy

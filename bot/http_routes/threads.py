@@ -4,7 +4,6 @@ from fastapi import routing, Depends
 from pydantic import BaseModel
 from .jwt_token import get_user
 
-
 router = routing.APIRouter(prefix="/thread", tags=['Threads related stuff'])
 
 
@@ -21,15 +20,17 @@ class Thread(BaseModel):
 
 
 @router.get('/', response_model=typing.List[Thread])
-def get_list_of_threads():
+async def get_list_of_threads(user=Depends(get_user)):
     """
     Get a list of the threads for the user
     """
-    return []
+    return [
+        Thread(id='fake', messages=[], created_at=datetime.now())
+    ]
 
 
 @router.post('/', response_model=Thread)
-def create_new_thread(user = Depends(get_user)):
+async def create_new_thread(user=Depends(get_user)):
     """
     Create new thread for a user
     """
@@ -38,16 +39,18 @@ def create_new_thread(user = Depends(get_user)):
 
 
 @router.get("/{thread_id}", response_model=typing.List[Message])
-def get_messages():
+async def get_messages(thread_id: str, user=Depends(get_user)):
     """
     Return list of the messages in thread
     """
-    return []
+    return [
+        Message(uuid='sdf', role='user', content='my message')
+    ]
 
 
 @router.post('/{thread_id}')
-def add_message():
+async def add_message(message: Message, user=Depends(get_user)):
     """
     Add a new message to the thread and kick off AI answer flow
     """
-    return {}
+    return

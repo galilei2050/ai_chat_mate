@@ -33,7 +33,7 @@ deploy-web:
     gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic web --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-backend:
-	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy backend --no-allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${BACKEND_IMAGE} && \
+	gcloud --project ${GOOGLE_CLOUD_PROJECT} run deploy backend --allow-unauthenticated --region ${GOOGLE_CLOUD_REGION} --image ${BACKEND_IMAGE} && \
 	gcloud --project ${GOOGLE_CLOUD_PROJECT} run services update-traffic backend --to-latest --region ${GOOGLE_CLOUD_REGION}
 
 deploy-api-gateway:

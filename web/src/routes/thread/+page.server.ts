@@ -1,16 +1,13 @@
-import {messages, max_thread_id} from "./database";
+import {BACKEND_BASE_URL} from "$env/static/private"
 
-export function load({params}) {
+export async function load({params}) {
     return {
-        last_thread_id: max_thread_id()
+        last_thread_id: null
     }
 }
 
 export const actions = {
     default: async (event) => {
-        messages.set((max_thread_id() + 1).toString(), [])
-        return {
-            last_thread_id: max_thread_id()
-        }
+        await fetch(`${BACKEND_BASE_URL}/api/thread/`)
     }
 }
