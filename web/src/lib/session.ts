@@ -58,7 +58,7 @@ export const initializeSessionChange = () => {
     if (!browser) {
         return
     }
-    onAuthStateChanged(firebaseAuth, (user) => {
+    onAuthStateChanged(firebaseAuth, async (user) => {
         if (user) {
             console.log(`User logged in: ${user.email} from ${user.providerId}`)
             session.set({
@@ -68,6 +68,22 @@ export const initializeSessionChange = () => {
                     photoURL: user.photoURL,
                     uid: user.uid
                 }
+            })
+            const accessToken = await user.getIdToken(false)
+
+            fetch('/login', {
+                method: "POST",
+                headers: [
+                    ["authorization", "bearer " + accessToken],
+                ],
+                body: JSON.stringify({
+                    accessToken: accessToken
+                })
+            }).then((value: Response) => {
+                console.log('Set auth cookies successfully')
+                // goto('/')
+            }).catch((reason) => {
+                console.error(`Failed to set cookies through backend ${reason}`)
             })
         } else {
             console.log('User logged out')

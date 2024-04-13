@@ -15,16 +15,12 @@
     afterUpdate(async () => {
         messagesContainer?.scrollIntoView(false);
         current_thread_id.set(data?.thread_id);
+        setTimeout(clear_data, 3000)
     });
 
     let clear_data = () => {
         submitButton?.click()
-        setTimeout(clear_data, 3000)
     }
-
-    onMount(() => {
-        setTimeout(clear_data, 3000)
-    })
 
 </script>
 
