@@ -79,7 +79,7 @@ async def create_new_thread(
     first_message = Message(
         uuid=str(uuid4()),
         role='assistant',
-        content="I'm your friendly assistant. How can I help?",
+        content="I'm your friendly AI hackathon. How can I help?",
         created_at=datetime.now()
     )
     _, doc_ref = await user.collection(THREADS).add(new_thread.dict(), document_id=new_thread.uuid)

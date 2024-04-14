@@ -28,6 +28,7 @@ uvicorn
 python-jose
 
 # Data stuff
+pyairtable
 scipy
 pandas
 pillow

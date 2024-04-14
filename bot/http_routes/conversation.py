@@ -1,4 +1,6 @@
 import logging
+import typing
+from collections import defaultdict
 from google.cloud import firestore
 
 from baski.concurrent import as_async
@@ -12,6 +14,7 @@ open_ai = OpenAiClient(
 You will be given the list of the projects submitted.
 Speaking about projects you MUST include only information provided. 
 You help navigate through projects submitted. 
+You MUST answer to the question in last message
 """
 )
 
