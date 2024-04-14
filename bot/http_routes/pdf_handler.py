@@ -140,3 +140,4 @@ if __name__ == "__main__":
     contents = handler.extract_information_from_pdf(pdfs[0])
     for i, text in contents.items():
         print(i, text[:20])
+

@@ -31,9 +31,11 @@ python-jose
 pyairtable
 scipy
 pandas
+
 pillow
 PyMuPDF
 numpy
+pypdf2
 
 # AI stuff
 openai<1.0.0
