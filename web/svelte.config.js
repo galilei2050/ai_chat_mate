@@ -44,6 +44,7 @@ const config = {
                 ],
                 'connect-src': [
                     'self',
+                    'https://securetoken.googleapis.com/',
                     "https://accounts.google.com/",
                     "https://identitytoolkit.googleapis.com"
                 ],

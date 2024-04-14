@@ -2,7 +2,7 @@
     import { fly, slide } from "svelte/transition";
     import current_thread_id from "../thread_store";
 
-    let select_thread_id: string = "";
+    let select_thread_id: string | undefined = undefined;
 
     current_thread_id.subscribe(value => {
         select_thread_id = value;
