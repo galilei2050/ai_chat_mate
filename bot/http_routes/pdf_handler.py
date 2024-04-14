@@ -51,7 +51,7 @@ class PDFHandler:
             with BytesIO() as buffer:
                 image_pil.save(buffer, format="JPEG")
                 img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
-                return img_str[:10]  # TODO: remove
+                return img_str
 
         images_b64 = [to_b64(image) for image in images]
         if self.single_query:
