@@ -30,7 +30,9 @@ python-jose
 # Data stuff
 scipy
 pandas
-pypdf2==3.0.1
+pillow
+PyMuPDF
+numpy
 
 # AI stuff
 openai<1.0.0
