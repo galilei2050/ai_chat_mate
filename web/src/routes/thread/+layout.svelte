@@ -1,14 +1,29 @@
 <script lang="ts">
-    import {onMount} from "svelte";
-
+    import {afterUpdate, onMount} from "svelte";
     import ThreadsList from "./components/ThreadsList.svelte";
     import NewThreadButton from "./components/NewThreadButton.svelte";
     import User from "$lib/components/User.svelte";
+    import {get} from "svelte/store"
+    import current_thread_id from "./thread_store";
+    import {goto} from "$app/navigation";
 
     export let data;
-        onMount(() => {
+    onMount(() => {
         console.log('Mounted Thread Layout');
     });
+
+    afterUpdate(() => {
+        const current_thread_id_value = get(current_thread_id)
+        if (!current_thread_id_value) {
+            if (data?.threads?.length > 0) {
+                const first_thread_uuid = data.threads[0].uuid
+                console.log(`Navigate to the $[first_thread_uuid}`)
+                goto(`thread/${first_thread_uuid}`)
+            } else {
+                console.log(`No current thread and no data`)
+            }
+        }
+    })
 
 </script>
 

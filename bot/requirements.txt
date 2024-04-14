@@ -28,9 +28,14 @@ uvicorn
 python-jose
 
 # Data stuff
+pyairtable
 scipy
 pandas
-pypdf2==3.0.1
+
+pillow
+PyMuPDF
+numpy
+pypdf2
 
 # AI stuff
 openai<1.0.0

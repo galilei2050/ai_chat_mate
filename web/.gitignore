@@ -18,7 +18,8 @@ build
 # Environment
 .env
 .env.*
-!.env.example
+.env.example
+#!.env.example
 
 # Vite Stuff
 vite.config.js.timestamp-*

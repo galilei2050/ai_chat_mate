@@ -1,6 +1,7 @@
 <script lang="ts">
-    import {afterUpdate, onMount} from 'svelte';
+    import {afterUpdate} from 'svelte';
     import {enhance} from "$app/forms";
+    import {get} from 'svelte/store';
 
     import InputBar from "./components/InputBar.svelte";
     import Messages from "./components/Messages.svelte";
@@ -11,20 +12,23 @@
     let submitButton: HTMLInputElement | undefined;
 
     export let data;
-
+    let messages_count = 0;
     afterUpdate(async () => {
-        messagesContainer?.scrollIntoView(false);
-        current_thread_id.set(data?.thread_id);
+        const thread_uuid = data?.thread_id
+        if (thread_uuid != get(current_thread_id)) {
+            current_thread_id.set(data?.thread_id);
+            console.log(`Set current thread to ${data?.thread_id}`)
+        }
+        if (data?.messages && data.messages.length !== messages_count) {
+            messagesContainer?.scrollIntoView(false);
+            messages_count = data.messages.length
+        }
+        setTimeout(clear_data, 3000)
     });
 
     let clear_data = () => {
         submitButton?.click()
-        setTimeout(clear_data, 3000)
     }
-
-    onMount(() => {
-        setTimeout(clear_data, 3000)
-    })
 
 </script>
 

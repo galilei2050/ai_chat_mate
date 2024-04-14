@@ -5,9 +5,10 @@ __all__ = ['OpenAiClient']
 
 class OpenAiClient(clients.OpenAiClient):
 
-    def __init__(self, telemetry=None):
+    def __init__(self, system_prompt=None, telemetry=None):
         super().__init__(
-            system_prompt=system_prompt_assistant, user_prompts=prompts,
+            system_prompt=system_prompt if system_prompt else system_prompt_assistant,
+            user_prompts=prompts,
             chunk_length=1024, telemetry=telemetry
         )
 
