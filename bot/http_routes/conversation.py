@@ -39,9 +39,35 @@ def make_message_from_row(row):
     }
 
 
+def get_unique_rows(rows: typing.List[dict], key='Project Name'):
+    projects = defaultdict(list)
+    for row in rows:
+        fields = row.get('fields') or {}
+        if not fields:
+            return None
+        project_name = fields['Project Name']
+        if project_name:
+            projects[project_name].append(row)
+    output = []
+    for project_rows in projects.values():
+        if len(project_rows) == 1:
+            output.append(project_rows[0])
+            continue
+        fields, project_row = {}, {}
+        for project_row in sorted(project_rows, key=lambda x: x['createdTime']):
+            fields = fields | project_row.get('fields')
+        project_row['fields'] = fields
+        output.append(project_row)
+    return output
+
+
 async def get_additional_context():
     rows = await as_async(table.all)
-    additional_context = [context_message] + [m for m in [make_message_from_row(row) for row in rows] if m]
+    additional_context = [context_message] + [
+        m for m in [
+            make_message_from_row(row)
+            for row in get_unique_rows(rows)] if m
+    ]
     return additional_context
 
 
